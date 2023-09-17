@@ -1,0 +1,18 @@
+# CLion-specific files and folders
+.idea/
+*.iml
+
+# Compiled binary files
+out/
+cmake-build-debug/
+cmake-build-release/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeScripts/
+Testing/
+
+# Visual Studio Code related files
+.vscode/
