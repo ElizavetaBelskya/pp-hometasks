@@ -11,7 +11,7 @@ int main() {
     int minA = a[0];
     int maxB = b[0];
 
-#pragma omp parallel num_threads(2)
+    #pragma omp parallel
     {
         int threadNum = omp_get_thread_num();
         if (threadNum == 0) {
