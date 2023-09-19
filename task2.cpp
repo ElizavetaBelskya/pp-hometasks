@@ -7,7 +7,7 @@
 
 
 int makeThreadsIf(int numThreads, int area) {
-#pragma omp parallel num_threads(numThreads)
+    #pragma omp parallel num_threads(numThreads)
     if (numThreads > 1) {
         {
             int threadNum = omp_get_thread_num();
@@ -22,7 +22,7 @@ int makeThreadsIf(int numThreads, int area) {
 }
 
 int makeThreads(int numThreads, int area) {
-#pragma omp parallel if (numThreads > 1) num_threads(numThreads)
+    #pragma omp parallel if (numThreads > 1) num_threads(numThreads)
     {
         int threadNum = omp_get_thread_num();
         int numThreads = omp_get_num_threads();

@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <omp.h>
 
 int main() {
     const int N = 10;

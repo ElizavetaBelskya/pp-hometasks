@@ -23,3 +23,9 @@ add_executable(task6 task6.cpp)
 add_executable(task7 task7.cpp)
 
 add_executable(task8 task8.cpp)
+
+add_executable(task9 task9.cpp)
+
+add_executable(task10 task10.cpp)
+
+add_executable(task11 task11.cpp)

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <omp.h>
 
+
 int main() {
     int a[10] = {5, 10, 2, 8, 7, 1, 3, 6, 4, 9};
     int b[10] = {15, 12, 20, 18, 17, 11, 13, 16, 14, 19};

@@ -5,8 +5,6 @@
 #include <iostream>
 #include <omp.h>
 #include <cstdlib>
-#include <ctime>
-#include <cstdlib>
 
 double random(double min, double max) {
     return min + static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (max - min)));
@@ -23,7 +21,6 @@ int main() {
     int count = 0;
     int sum = 0;
 
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             d[i][j] = random(0, 99);
