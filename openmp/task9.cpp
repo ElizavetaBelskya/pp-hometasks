@@ -10,13 +10,13 @@ double random(double min, double max) {
 }
 
 int main() {
-    const int numRows = 6;
-    const int numCols = 8;
-    double d[numRows][numCols];
+    const int rows = 6;
+    const int cols = 8;
+    double d[rows][cols];
 
     #pragma omp parallel for
-    for (int i = 0; i < numRows; ++i) {
-        for (int j = 0; j < numCols; ++j) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
             d[i][j] = random(1.0, 100.0);
         }
     }
@@ -25,8 +25,8 @@ int main() {
     double maxVal = d[0][0];
 
     #pragma omp parallel for
-    for (int i = 0; i < numRows; ++i) {
-        for (int j = 0; j < numCols; ++j) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
             double value = d[i][j];
 
             #pragma omp critical

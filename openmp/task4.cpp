@@ -12,6 +12,7 @@ int main() {
     int minA = a[0];
     int maxB = b[0];
 
+
     #pragma omp parallel
     {
         int threadNum = omp_get_thread_num();
@@ -36,3 +37,6 @@ int main() {
     return 0;
 }
 
+
+
+//все переменные по умолчанию shared
