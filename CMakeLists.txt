@@ -21,7 +21,7 @@ add_executable(task6 mpi/mpi_task6.cpp)
 add_executable(task7 mpi/mpi_task7.cpp)
 add_executable(task8 mpi/mpi_task8.cpp)
 add_executable(task9 mpi/mpi_task9.cpp)
-
+add_executable(task10 mpi/mpi_task10.cpp)
 
 # Связываем программу с MPI библиотекой
 target_link_libraries(task1 ${MPI_C_LIBRARIES})
@@ -33,3 +33,4 @@ target_link_libraries(task6 ${MPI_C_LIBRARIES})
 target_link_libraries(task7 ${MPI_C_LIBRARIES})
 target_link_libraries(task8 ${MPI_C_LIBRARIES})
 target_link_libraries(task9 ${MPI_C_LIBRARIES})
+target_link_libraries(task10 ${MPI_C_LIBRARIES})
