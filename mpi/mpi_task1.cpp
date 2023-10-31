@@ -10,14 +10,12 @@ int main(int argc, char* argv[]) {
         printf("This program should be run with 4 processes. Exiting...\n");
         MPI_Finalize();
         return 1;
+    } else {
+        int rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        printf("Hello, World! %d process\n", rank);
+        MPI_Finalize();
+        return 0;
     }
-
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    printf("Hello, World! %d process\n", rank);
-
-    MPI_Finalize();
-    return 0;
 }
 
