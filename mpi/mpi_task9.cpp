@@ -15,6 +15,13 @@ void printMatrix(int matrix[MATRIX_SIZE][MATRIX_SIZE]) {
     }
 }
 
+void printVector(int v[MATRIX_SIZE]) {
+    for (int i = 0; i < MATRIX_SIZE; i++) {
+        printf("%d ", v[i]);
+    }
+    printf("\n");
+}
+
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
@@ -46,27 +53,29 @@ int main(int argc, char** argv) {
         printMatrix(matrixA);
         printMatrix(matrixB);
         int n = 1;
-        int k = 1;
+        int k = 0;
         for (int i = 0; i < MATRIX_SIZE; i++) {
             for (int j = 0; j < MATRIX_SIZE ; j++) {
-                MPI_Send(&matrixA[i][0], MATRIX_SIZE, MPI_INT, n, n, MPI_COMM_WORLD);
-                MPI_Send(&matrixB_trans[j][0], MATRIX_SIZE, MPI_INT, n, n, MPI_COMM_WORLD);
+                MPI_Send(&matrixA[i][0], MATRIX_SIZE, MPI_INT, n, n + k, MPI_COMM_WORLD);
+                MPI_Send(&matrixB_trans[j][0], MATRIX_SIZE, MPI_INT, n, n + k, MPI_COMM_WORLD);
+                k++;
                 if (k % 5 == 0) {
                     n++;
+                    k = 0;
                 }
-                k++;
             }
         }
 
         n = 1;
-        k = 1;
+        k = 0;
         for (int i = 0; i < MATRIX_SIZE; i++) {
             for (int j = 0; j < MATRIX_SIZE; j++) {
-                MPI_Recv(&result[i][j], 1, MPI_INT, n, n, MPI_COMM_WORLD, &status);
+                MPI_Recv(&result[i][j], 1, MPI_INT, n, n+k, MPI_COMM_WORLD, &status);
+                k++;
                 if (k % 5 == 0) {
                     n++;
+                    k = 0;
                 }
-                k++;
             }
         }
         printMatrix(result);
@@ -75,15 +84,19 @@ int main(int argc, char** argv) {
         int vectorB[MATRIX_SIZE];
         int c;
         for (int k = 0; k < elements_per_process; k++) {
-            c = 0;
             MPI_Recv(&vectorA, MATRIX_SIZE, MPI_INT, 0,
-                     world_rank, MPI_COMM_WORLD, &status);
+                     world_rank + k, MPI_COMM_WORLD, &status);
             MPI_Recv(&vectorB, MATRIX_SIZE, MPI_INT, 0,
-                     world_rank, MPI_COMM_WORLD, &status);
-            for (int z = 0; z < elements_per_process; z++) {
+                     world_rank + k, MPI_COMM_WORLD, &status);
+            if (world_rank == 1) {
+                printVector(vectorA);
+                printVector(vectorB);
+            }
+            c = 0;
+            for (int z = 0; z < MATRIX_SIZE; z++) {
                 c += vectorA[z] * vectorB[z];
             }
-            MPI_Send(&c, 1, MPI_INT, 0, world_rank, MPI_COMM_WORLD);
+            MPI_Send(&c, 1, MPI_INT, 0, world_rank + k, MPI_COMM_WORLD);
         }
     }
 
