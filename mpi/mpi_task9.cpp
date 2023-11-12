@@ -1,10 +1,9 @@
 //
 // Created by Елизавета on 18.10.2023.
 //
-#include <iostream>
+
 #include <mpi.h>
 #include <random>
-
 #define MATRIX_SIZE 10
 
 void printMatrix(int matrix[MATRIX_SIZE][MATRIX_SIZE]) {
@@ -26,13 +25,9 @@ int main(int argc, char** argv) {
     int world_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-    if (world_size < MATRIX_SIZE*MATRIX_SIZE + 1) {
-        printf("This program should be run with at least %d processes.\n", MATRIX_SIZE*MATRIX_SIZE + 1);
-        MPI_Finalize();
-        return 1;
-    }
-
     MPI_Status status;
+
+    int elements_per_process = 5;
 
     if (world_rank == 0) {
         int matrixA[MATRIX_SIZE][MATRIX_SIZE];
@@ -50,41 +45,46 @@ int main(int argc, char** argv) {
 
         printMatrix(matrixA);
         printMatrix(matrixB);
-        int elements_per_process = MATRIX_SIZE;
         int n = 1;
+        int k = 1;
         for (int i = 0; i < MATRIX_SIZE; i++) {
-            for (int j = 0; j < MATRIX_SIZE; j++) {
-                MPI_Send(&matrixA[i][0], elements_per_process, MPI_INT, n, n, MPI_COMM_WORLD);
-                MPI_Send(&matrixB_trans[j][0], elements_per_process, MPI_INT, n, n, MPI_COMM_WORLD);
-                n++;
+            for (int j = 0; j < MATRIX_SIZE ; j++) {
+                MPI_Send(&matrixA[i][0], MATRIX_SIZE, MPI_INT, n, n, MPI_COMM_WORLD);
+                MPI_Send(&matrixB_trans[j][0], MATRIX_SIZE, MPI_INT, n, n, MPI_COMM_WORLD);
+                if (k % 5 == 0) {
+                    n++;
+                }
+                k++;
             }
         }
 
         n = 1;
+        k = 1;
         for (int i = 0; i < MATRIX_SIZE; i++) {
             for (int j = 0; j < MATRIX_SIZE; j++) {
                 MPI_Recv(&result[i][j], 1, MPI_INT, n, n, MPI_COMM_WORLD, &status);
-                n++;
+                if (k % 5 == 0) {
+                    n++;
+                }
+                k++;
             }
         }
         printMatrix(result);
-
-    } else {
-        int count;
-        MPI_Probe(0, world_rank, MPI_COMM_WORLD, &status);
-        MPI_Get_count(&status, MPI_INT, &count);
+    } else if (world_rank <= ((MATRIX_SIZE * MATRIX_SIZE) / 5)) {
         int vectorA[MATRIX_SIZE];
         int vectorB[MATRIX_SIZE];
-        int c = 0;
-
-        MPI_Recv(&vectorA[0], count, MPI_INT, 0, world_rank, MPI_COMM_WORLD, &status);
-        MPI_Recv(&vectorB[0], count, MPI_INT, 0, world_rank, MPI_COMM_WORLD, &status);
-
-        for (int i = 0; i < count; ++i) {
-            c += vectorA[i] * vectorB[i];
+        int c;
+        for (int k = 0; k < elements_per_process; k++) {
+            c = 0;
+            MPI_Recv(&vectorA, MATRIX_SIZE, MPI_INT, 0,
+                     world_rank, MPI_COMM_WORLD, &status);
+            MPI_Recv(&vectorB, MATRIX_SIZE, MPI_INT, 0,
+                     world_rank, MPI_COMM_WORLD, &status);
+            for (int z = 0; z < elements_per_process; z++) {
+                c += vectorA[z] * vectorB[z];
+            }
+            MPI_Send(&c, 1, MPI_INT, 0, world_rank, MPI_COMM_WORLD);
         }
-
-        MPI_Send(&c, 1, MPI_INT, 0, world_rank, MPI_COMM_WORLD);
     }
 
     MPI_Finalize();

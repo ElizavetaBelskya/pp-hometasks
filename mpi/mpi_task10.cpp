@@ -22,12 +22,6 @@ int main(int argc, char** argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Status status;
 
-    if (size < MATRIX_SIZE*MATRIX_SIZE) {
-        printf("This program should be run with at least %d processes.\n", MATRIX_SIZE*MATRIX_SIZE + 1);
-        MPI_Finalize();
-        return 1;
-    }
-
     if (rank == 0) {
         int a[MATRIX_SIZE][MATRIX_SIZE];
         int t_a[MATRIX_SIZE][MATRIX_SIZE];
@@ -39,34 +33,42 @@ int main(int argc, char** argv) {
         }
         printMatrix(a);
         int n = 1;
+        int k = 1;
         for (int i = 0; i < MATRIX_SIZE; i++) {
             for (int j = 0; j < MATRIX_SIZE; j++) {
                 MPI_Send(&a[i][j], 1, MPI_INT, n, n, MPI_COMM_WORLD);
                 MPI_Send(&a[j][i], 1, MPI_INT, n, n, MPI_COMM_WORLD);
-                n++;
+                if (k % 5 == 0) {
+                    n++;
+                }
+                k++;
             }
         }
 
         n = 1;
+        k = 1;
         for (int i = 0; i < MATRIX_SIZE; i++) {
             for (int j = 0; j < MATRIX_SIZE; j++) {
                 MPI_Recv(&t_a[i][j], 1, MPI_INT, n, n, MPI_COMM_WORLD, &status);
                 MPI_Recv(&t_a[j][i], 1, MPI_INT, n, n, MPI_COMM_WORLD, &status);
-                n++;
+                if (k % 5 == 0) {
+                    n++;
+                }
+                k++;
             }
         }
         printMatrix(t_a);
 
-    } else {
-        MPI_Probe(0, rank, MPI_COMM_WORLD, &status);
+    } else if (rank <= ((MATRIX_SIZE * MATRIX_SIZE) / 5)) {
         int a;
         int b;
+        for (int k = 0; k < 5; k++) {
+            MPI_Recv(&a, 1, MPI_INT, 0, rank, MPI_COMM_WORLD, &status);
+            MPI_Recv(&b, 1, MPI_INT, 0, rank, MPI_COMM_WORLD, &status);
 
-        MPI_Recv(&a, 1, MPI_INT, 0, rank, MPI_COMM_WORLD, &status);
-        MPI_Recv(&b, 1, MPI_INT, 0, rank, MPI_COMM_WORLD, &status);
-
-        MPI_Send(&b, 1, MPI_INT, 0, rank, MPI_COMM_WORLD);
-        MPI_Send(&a, 1, MPI_INT, 0, rank, MPI_COMM_WORLD);
+            MPI_Send(&b, 1, MPI_INT, 0, rank, MPI_COMM_WORLD);
+            MPI_Send(&a, 1, MPI_INT, 0, rank, MPI_COMM_WORLD);
+        }
     }
 
     MPI_Finalize();
