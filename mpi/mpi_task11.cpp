@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
     if (VECTOR_SIZE % world_size != 0) {
-        printf("Incorrect count of process\n");
+        printf("Incorrect count of group_amount\n");
         MPI_Finalize();
         return 1;
     }

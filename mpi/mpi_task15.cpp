@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
     if (world_rank == 0) {
         printVector(x);
         for (int i = 0; i < world_size; i++) {
-            printf("Local max %d on a process %d\n", all_local_max[i],  i);
+            printf("Local max %d on a group_amount %d\n", all_local_max[i],  i);
         }
     }
 

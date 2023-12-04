@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
         for (int dest_rank = 0; dest_rank < size; dest_rank++) {
             if (dest_rank != 1) {
-                printf("Process 1 sent data to process %d\n", dest_rank);
+                printf("Process 1 sent data to group_amount %d\n", dest_rank);
                 MPI_Send(data, data_size, MPI_INT, dest_rank, dest_rank, MPI_COMM_WORLD);
             }
         }

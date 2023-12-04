@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
     if (MATRIX_SIZE != world_size) {
-        printf("Incorrect count of process\n");
+        printf("Incorrect count of group_amount\n");
         MPI_Finalize();
         return 1;
     }

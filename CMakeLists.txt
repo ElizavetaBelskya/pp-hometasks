@@ -3,6 +3,9 @@ project(OpenMPTest)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
+
 find_package(OpenMP REQUIRED)
 if(OpenMP_CXX_FOUND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -27,6 +30,11 @@ add_executable(task12 mpi/mpi_task12.cpp)
 add_executable(task13 mpi/mpi_task13.cpp)
 add_executable(task14 mpi/mpi_task14.cpp)
 add_executable(task15 mpi/mpi_task15.cpp)
+add_executable(task4_1 mpi-2/task4_1.cpp)
+add_executable(task4_2 mpi-2/task4_2.cpp)
+add_executable(task5_1 mpi-2/task5_1.cpp)
+add_executable(task5_2 mpi-2/task5_2.cpp)
+add_executable(task5_3 mpi-2/task5_3.cpp)
 
 # Связываем программу с MPI библиотекой
 target_link_libraries(task1 ${MPI_C_LIBRARIES})
@@ -44,3 +52,8 @@ target_link_libraries(task12 ${MPI_C_LIBRARIES})
 target_link_libraries(task13 ${MPI_C_LIBRARIES})
 target_link_libraries(task14 ${MPI_C_LIBRARIES})
 target_link_libraries(task15 ${MPI_C_LIBRARIES})
+target_link_libraries(task4_1 ${MPI_C_LIBRARIES})
+target_link_libraries(task4_2 ${MPI_C_LIBRARIES})
+target_link_libraries(task5_1 ${MPI_C_LIBRARIES})
+target_link_libraries(task5_2 ${MPI_C_LIBRARIES})
+target_link_libraries(task5_3 ${MPI_C_LIBRARIES})

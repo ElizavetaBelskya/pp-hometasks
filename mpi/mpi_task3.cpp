@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
         int received_a[10];
         MPI_Recv(received_a, 10, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-        printf("Received array on process 1: ");
+        printf("Received array on group_amount 1: ");
         for (int i = 0; i < 10; i++) {
             printf("%d ", received_a[i]);
         }
