@@ -19,7 +19,7 @@ void printArray(int rank, MatrixBlock local_block) {
         }
         std::cout << std::endl;
     }
-};
+}
 
 void createStructType(MPI_Datatype* type) {
     MPI_Aint displacements[2];

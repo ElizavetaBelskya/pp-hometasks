@@ -35,6 +35,8 @@ add_executable(task4_2 mpi-2/task4_2.cpp)
 add_executable(task5_1 mpi-2/task5_1.cpp)
 add_executable(task5_2 mpi-2/task5_2.cpp)
 add_executable(task5_3 mpi-2/task5_3.cpp)
+add_executable(no_parallel quick_sort/no_parallel.cpp)
+add_executable(parallel quick_sort/parallel.cpp)
 
 # Связываем программу с MPI библиотекой
 target_link_libraries(task1 ${MPI_C_LIBRARIES})
@@ -57,3 +59,5 @@ target_link_libraries(task4_2 ${MPI_C_LIBRARIES})
 target_link_libraries(task5_1 ${MPI_C_LIBRARIES})
 target_link_libraries(task5_2 ${MPI_C_LIBRARIES})
 target_link_libraries(task5_3 ${MPI_C_LIBRARIES})
+
+target_link_libraries(parallel ${MPI_C_LIBRARIES})
